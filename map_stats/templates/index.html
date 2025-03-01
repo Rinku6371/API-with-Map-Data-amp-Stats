@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Map Data and Stats</title>
+    <style>
+        #map {
+            width: 100%;
+            height: 500px;
+            position: relative;
+        }
+        .marker {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background-color: red;
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            cursor: pointer;
+        }
+    </style>
+    <script>
+        async function fetchData() {
+            try {
+                // Fetch locations data
+                const response = await fetch('/api/locations/');
+                if (!response.ok) {
+                    throw new Error('Failed to fetch locations data');
+                }
+                const data = await response.json();
+                console.log(data);
+
+                // Display data on map
+                const mapElement = document.getElementById('map');
+                mapElement.innerHTML = ''; // Clear the map element
+                data.features.forEach(feature => {
+                    const marker = document.createElement('div');
+                    marker.classList.add('marker');
+                    marker.style.top = `${Math.random() * 100}%`;
+                    marker.style.left = `${Math.random() * 100}%`;
+                    marker.title = `${feature.properties.name} (${feature.properties.category})`;
+                    mapElement.appendChild(marker);
+                });
+
+                // Fetch statistics data
+                const statsResponse = await fetch('/api/locations/stats/');
+                if (!statsResponse.ok) {
+                    throw new Error('Failed to fetch statistics data');
+                }
+                const stats = await statsResponse.json();
+                console.log(stats);
+
+                // Display statistics
+                document.getElementById('total_locations').textContent = `Total Locations: ${stats.total_locations}`;
+                document.getElementById('most_common_category').textContent = `Most Common Category: ${stats.most_common_category}`;
+            } catch (error) {
+                console.error('Error:', error);
+                alert('An error occurred while fetching data. Please try again later.');
+            }
+        }
+
+        window.onload = fetchData;
+    </script>
+</head>
+<body>
+    <h1>Welcome to My Website</h1>
+    <div id="map"></div>
+    <p id="total_locations"></p>
+    <p id="most_common_category"></p>
+</body>
+</html>

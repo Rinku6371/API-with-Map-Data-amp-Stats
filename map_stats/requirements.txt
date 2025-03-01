@@ -1,0 +1,12 @@
+asgiref==3.8.1
+Django==5.1.6
+django-filter==24.3
+djangorestframework==3.15.2
+djangorestframework-gis==1.1
+djangorestframework_simplejwt==5.5.0
+Jinja2==3.1.5
+leaflet==0.0.3
+MarkupSafe==3.0.2
+PyJWT==2.9.0
+sqlparse==0.5.3
+tzdata==2025.1
